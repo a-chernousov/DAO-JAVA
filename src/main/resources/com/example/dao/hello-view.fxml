@@ -11,6 +11,8 @@
 
 <?import javafx.scene.control.cell.PropertyValueFactory?>
 <?import java.net.URL?>
+<?import javafx.scene.control.ComboBox?>
+<?import com.example.dao.ButtonCell?>
 <VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.example.dao.HelloController">
   <stylesheets>
@@ -22,24 +24,38 @@
 
   <TableView fx:id="productTable">
     <columns>
+      <!-- Колонка "Название продукта" -->
       <TableColumn text="Название продукта" prefWidth="150">
         <cellValueFactory>
           <PropertyValueFactory property="name"/>
         </cellValueFactory>
       </TableColumn>
+
+      <!-- Колонка "Количество" -->
       <TableColumn text="Количество" prefWidth="100">
         <cellValueFactory>
           <PropertyValueFactory property="count"/>
         </cellValueFactory>
       </TableColumn>
-      <TableColumn text="Действия" prefWidth="150">
-        <!-- Здесь будет установлена cellFactory в контроллере -->
+
+      <!-- Новая колонка "Категория" -->
+      <TableColumn text="Категория" prefWidth="150">
+        <cellValueFactory>
+          <PropertyValueFactory property="categoryName"/>
+        </cellValueFactory>
+      </TableColumn>
+
+      <!-- Колонка с кнопками "+" и "-" -->
+      <TableColumn text="Действия" prefWidth="150" fx:id="actionsColumn">
+        <cellFactory>
+        </cellFactory>
       </TableColumn>
     </columns>
   </TableView>
 
   <HBox spacing="10" alignment="CENTER">
     <TextField fx:id="productNameField" promptText="Введите название продукта"/>
+    <ComboBox fx:id="categoryComboBox" promptText="Выберите категорию"/>
     <Button text="Добавить продукт" onAction="#addProduct"/>
   </HBox>
 </VBox>

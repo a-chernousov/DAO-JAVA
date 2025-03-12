@@ -30,28 +30,66 @@ public class DatabaseConnection {
         }
     }
 
+    public boolean isTableExists(String tableName) {
+        String sql = "SELECT EXISTS (SELECT FROM information_schema.tables WHERE table_name = ?)";
+
+        try (Connection connection = DriverManager.getConnection(url, user, password);
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, tableName.toLowerCase());
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getBoolean(1);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Ошибка при проверке существования таблицы: " + e.getMessage());
+        }
+        return false;
+    }
+
     public void createTable() {
-        String sql = "CREATE TABLE IF NOT EXISTS ProductsList (" +
+        // Создаем таблицу Categories, если она не существует
+        String createCategoriesTable = "CREATE TABLE IF NOT EXISTS Categories (" +
+                "id SERIAL PRIMARY KEY, " +
+                "name VARCHAR(50) NOT NULL)";
+
+        // Создаем таблицу ProductsList, если она не существует
+        String createProductsTable = "CREATE TABLE IF NOT EXISTS ProductsList (" +
                 "id SERIAL PRIMARY KEY, " +
                 "name VARCHAR(50) NOT NULL, " +
-                "count DOUBLE PRECISION NOT NULL)";
+                "count DOUBLE PRECISION NOT NULL, " +
+                "category_id INT REFERENCES Categories(id))";
 
         try (Connection connection = DriverManager.getConnection(url, user, password);
              Statement statement = connection.createStatement()) {
-            statement.execute(sql);
-            System.out.println("Таблица создана или уже существует.");
+
+            // Создаем таблицу Categories
+            if (!isTableExists("categories")) {
+                System.out.println("Выполнение запроса: " + createCategoriesTable);
+                statement.execute(createCategoriesTable);
+                System.out.println("Таблица Categories создана.");
+            }
+
+            // Создаем таблицу ProductsList
+            if (!isTableExists("productslist")) {
+                System.out.println("Выполнение запроса: " + createProductsTable);
+                statement.execute(createProductsTable);
+                System.out.println("Таблица ProductsList создана.");
+            }
+
         } catch (SQLException e) {
-            System.err.println("Ошибка при создании таблицы: " + e.getMessage());
+            System.err.println("Ошибка при создании таблиц: " + e.getMessage());
         }
     }
 
-    public void insertProduct(String name, double count) {
-        String sql = "INSERT INTO ProductsList (name, count) VALUES (?, ?)";
+    public void insertProduct(String name, double count, int categoryId) {
+        String sql = "INSERT INTO ProductsList (name, count, category_id) VALUES (?, ?, ?)";
 
         try (Connection connection = DriverManager.getConnection(url, user, password);
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, name);
             preparedStatement.setDouble(2, count);
+            preparedStatement.setInt(3, categoryId);
             preparedStatement.executeUpdate();
             System.out.println("Данные успешно добавлены.");
         } catch (SQLException e) {
@@ -61,7 +99,9 @@ public class DatabaseConnection {
 
     public List<Product> selectAllProducts() {
         List<Product> products = new ArrayList<>();
-        String sql = "SELECT * FROM ProductsList";
+        String sql = "SELECT p.name, p.count, c.name AS category_name " +
+                "FROM ProductsList p " +
+                "JOIN Categories c ON p.category_id = c.id";
 
         try (Connection connection = DriverManager.getConnection(url, user, password);
              Statement statement = connection.createStatement();
@@ -70,7 +110,8 @@ public class DatabaseConnection {
             while (resultSet.next()) {
                 String name = resultSet.getString("name");
                 double count = resultSet.getDouble("count");
-                products.add(new Product(name, count));
+                String categoryName = resultSet.getString("category_name");
+                products.add(new Product(name, count, categoryName));
             }
         } catch (SQLException e) {
             System.err.println("Ошибка при выборке данных: " + e.getMessage());
@@ -91,6 +132,8 @@ public class DatabaseConnection {
             System.err.println("Ошибка при обновлении данных: " + e.getMessage());
         }
     }
+
+
 
     public void deleteProduct(Product product) {
         String sql = "DELETE FROM ProductsList WHERE name = ?";
@@ -115,5 +158,52 @@ public class DatabaseConnection {
         } catch (SQLException e) {
             System.err.println("Ошибка при удалении таблицы: " + e.getMessage());
         }
+    }
+
+    public List<String> selectAllCategories() {
+        List<String> categories = new ArrayList<>();
+        String sql = "SELECT name FROM Categories";
+
+        try (Connection connection = DriverManager.getConnection(url, user, password);
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(sql)) {
+
+            while (resultSet.next()) {
+                categories.add(resultSet.getString("name"));
+            }
+        } catch (SQLException e) {
+            System.err.println("Ошибка при выборке категорий: " + e.getMessage());
+        }
+        return categories;
+    }
+
+    public void insertCategory(String name) {
+        String sql = "INSERT INTO Categories (name) VALUES (?)";
+
+        try (Connection connection = DriverManager.getConnection(url, user, password);
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, name);
+            preparedStatement.executeUpdate();
+            System.out.println("Категория успешно добавлена.");
+        } catch (SQLException e) {
+            System.err.println("Ошибка при добавлении категории: " + e.getMessage());
+        }
+    }
+
+    public int getCategoryIdByName(String name) {
+        String sql = "SELECT id FROM Categories WHERE name = ?";
+
+        try (Connection connection = DriverManager.getConnection(url, user, password);
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, name);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt("id");
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Ошибка при получении ID категории: " + e.getMessage());
+        }
+        return -1; // Если категория не найдена
     }
 }

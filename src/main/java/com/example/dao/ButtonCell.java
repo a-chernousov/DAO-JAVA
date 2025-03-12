@@ -1,10 +1,9 @@
 package com.example.dao;
 
-import com.example.dao.BD.Product;
-import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
 import javafx.scene.layout.HBox;
+import com.example.dao.BD.Product;
 
 public class ButtonCell extends TableCell<Product, Void> {
     private final Button decreaseButton = new Button("-");
@@ -18,10 +17,6 @@ public class ButtonCell extends TableCell<Product, Void> {
 
         // Устанавливаем расстояние между кнопками
         hbox.setSpacing(10); // 10 пикселей между кнопками
-
-        // Устанавливаем отступы внутри кнопок
-        decreaseButton.setPadding(new Insets(5, 10, 5, 10)); // Отступы внутри кнопки "-"
-        increaseButton.setPadding(new Insets(5, 10, 5, 10)); // Отступы внутри кнопки "+"
 
         decreaseButton.setOnAction(event -> {
             Product product = getTableView().getItems().get(getIndex());

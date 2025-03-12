@@ -6,11 +6,12 @@ import javafx.beans.property.SimpleStringProperty;
 public class Product {
     private SimpleStringProperty name;
     private SimpleDoubleProperty count;
-    private SimpleDoubleProperty category;
+    private SimpleStringProperty categoryName;  // Новое поле для категории
 
-    public Product(String name, double count) {
+    public Product(String name, double count, String categoryName) {
         this.name = new SimpleStringProperty(name);
         this.count = new SimpleDoubleProperty(count);
+        this.categoryName = new SimpleStringProperty(categoryName);
     }
 
     public String getName() {
@@ -21,6 +22,10 @@ public class Product {
         this.name.set(name);
     }
 
+    public SimpleStringProperty nameProperty() {
+        return name;
+    }
+
     public double getCount() {
         return count.get();
     }
@@ -29,15 +34,28 @@ public class Product {
         this.count.set(count);
     }
 
-    public double getCategory() {
-        return category.get();
+    public SimpleDoubleProperty countProperty() {
+        return count;
     }
 
-    public SimpleDoubleProperty categoryProperty() {
-        return category;
+    public String getCategoryName() {
+        return categoryName.get();
     }
 
-    public void setCategory(double category) {
-        this.category.set(category);
+    public void setCategoryName(String categoryName) {
+        this.categoryName.set(categoryName);
+    }
+
+    public SimpleStringProperty categoryNameProperty() {
+        return categoryName;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "name=" + name.get() +
+                ", count=" + count.get() +
+                ", categoryName=" + categoryName.get() +
+                '}';
     }
 }

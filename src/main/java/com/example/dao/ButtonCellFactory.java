@@ -27,6 +27,7 @@ public class ButtonCellFactory implements Callback<TableColumn<Product, Void>, T
             private final Button increaseButton = new Button("+");
             private final HBox hbox = new HBox(decreaseButton, increaseButton);
 
+
             {
                 decreaseButton.setOnAction(event -> {
                     Product product = getTableView().getItems().get(getIndex());

@@ -6,6 +6,7 @@ import javafx.beans.property.SimpleStringProperty;
 public class Product {
     private SimpleStringProperty name;
     private SimpleDoubleProperty count;
+    private SimpleDoubleProperty category;
 
     public Product(String name, double count) {
         this.name = new SimpleStringProperty(name);
@@ -26,5 +27,17 @@ public class Product {
 
     public void setCount(double count) {
         this.count.set(count);
+    }
+
+    public double getCategory() {
+        return category.get();
+    }
+
+    public SimpleDoubleProperty categoryProperty() {
+        return category;
+    }
+
+    public void setCategory(double category) {
+        this.category.set(category);
     }
 }

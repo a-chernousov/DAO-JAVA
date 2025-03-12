@@ -1,0 +1,7 @@
+.button-cell {
+    -fx-spacing: 10px; /* Расстояние между кнопками */
+}
+
+.button-cell .button {
+    -fx-padding: 5px 10px; /* Отступы внутри кнопок */
+}

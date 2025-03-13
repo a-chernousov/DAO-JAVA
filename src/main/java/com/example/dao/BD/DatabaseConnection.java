@@ -11,7 +11,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DatabaseConnection {
+public class DatabaseConnection implements DAO{
     public String url = "jdbc:postgresql://localhost:5432/Products"; // URL базы данных
     public String user = "postgres"; // Имя пользователя
     public String password = "1111"; // Пароль
@@ -49,9 +49,11 @@ public class DatabaseConnection {
 
     public void createTable() {
         // Создаем таблицу Categories, если она не существует
-        String createCategoriesTable = "CREATE TABLE IF NOT EXISTS Categories (" +
-                "id SERIAL PRIMARY KEY, " +
-                "name VARCHAR(50) NOT NULL)";
+        String createCategoriesTable = "CREATE TABLE Categories (\n" +
+                "    id SERIAL PRIMARY KEY,         -- Уникальный идентификатор категории\n" +
+                "    name VARCHAR(50) NOT NULL,     -- Название категории\n" +
+                "    order_index INT                -- Поле для сортировки категорий\n" +
+                ");";
 
         // Создаем таблицу ProductsList, если она не существует
         String createProductsTable = "CREATE TABLE IF NOT EXISTS ProductsList (" +

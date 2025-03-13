@@ -1,13 +1,13 @@
 package com.example.dao;
 
+import com.example.dao.BD.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import com.example.dao.BD.Product;
-import com.example.dao.BD.DatabaseConnection;
 
+//TODO
 public class HelloController {
     @FXML
     private TableView<Product> productTable;
@@ -17,18 +17,20 @@ public class HelloController {
     private ComboBox<String> categoryComboBox;
     @FXML
     private TableColumn<Product, Void> actionsColumn;
+    private ProductList productList;
 
     private DatabaseConnection databaseConnection = new DatabaseConnection();
 
     @FXML
     public void initialize() {
-        databaseConnection.createTable();
-        databaseConnection.ConnectToBD();
+//        databaseConnection.createTable();
+//        databaseConnection.ConnectToBD();
+        DAO postgresDAO = new PostgresDAO();
+        this.productList = new ProductList(postgresDAO);
         refreshTable();
 
         // Отключаем автоматическую сортировку при изменении данных
         productTable.setSortPolicy(param -> {
-            // Сортировка будет происходить только при нажатии на заголовок колонки
             return true;
         });
 
@@ -45,21 +47,17 @@ public class HelloController {
         String categoryName = categoryComboBox.getValue();
 
         if (productName != null && !productName.trim().isEmpty() && categoryName != null) {
-            int categoryId = databaseConnection.getCategoryIdByName(categoryName);
-            if (categoryId != -1) {
-                databaseConnection.insertProduct(productName, 1, categoryId);
-                refreshTable();
-                productNameField.clear();
-            } else {
-                System.err.println("Категория не найдена!");
-            }
+            Product product = new Product(productName, 1, categoryName);
+            productList.addProduct(product);
+            refreshTable();
+            productNameField.clear();
         }
     }
 
     @FXML
     protected void increaseQuantity(Product product) {
         product.setCount(product.getCount() + 1);
-        databaseConnection.updateProduct(product);
+        productList.updateProduct(product);
         refreshTable();
     }
 
@@ -67,23 +65,16 @@ public class HelloController {
     protected void decreaseQuantity(Product product) {
         if (product.getCount() > 1) {
             product.setCount(product.getCount() - 1);
-            databaseConnection.updateProduct(product);
+            productList.updateProduct(product);
         } else {
-            databaseConnection.deleteProduct(product);
+            productList.deleteProduct(product);
         }
         refreshTable();
     }
 
     private void refreshTable() {
-        // Сохраняем текущее выделение
-        int selectedIndex = getSelectedIndex();
-
-        // Обновляем данные в таблице
         productTable.getItems().clear();
-        productTable.getItems().addAll(databaseConnection.selectAllProducts());
-
-        // Восстанавливаем выделение
-        restoreSelection(selectedIndex);
+        productTable.getItems().addAll(productList.getAllProducts());
     }
 
     private int getSelectedIndex() {

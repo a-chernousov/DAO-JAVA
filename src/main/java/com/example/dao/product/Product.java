@@ -1,4 +1,4 @@
-package com.example.dao.BD;
+package com.example.dao.product;
 
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -6,7 +6,7 @@ import javafx.beans.property.SimpleStringProperty;
 public class Product {
     private SimpleStringProperty name;
     private SimpleDoubleProperty count;
-    private SimpleStringProperty categoryName;  // Новое поле для категории
+    private SimpleStringProperty categoryName;
 
     public Product(String name, double count, String categoryName) {
         this.name = new SimpleStringProperty(name);
@@ -52,10 +52,11 @@ public class Product {
 
     @Override
     public String toString() {
-        return "Product{" +
+        String s = "Product{" +
                 "name=" + name.get() +
                 ", count=" + count.get() +
                 ", categoryName=" + categoryName.get() +
                 '}';
+        return s;
     }
 }

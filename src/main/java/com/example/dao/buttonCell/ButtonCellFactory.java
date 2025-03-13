@@ -1,6 +1,7 @@
-package com.example.dao;
+package com.example.dao.buttonCell;
 
-import com.example.dao.BD.Product;
+import com.example.dao.product.Product;
+import com.example.dao.HelloController;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;

@@ -1,9 +1,10 @@
-package com.example.dao;
+package com.example.dao.buttonCell;
 
+import com.example.dao.HelloController;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
 import javafx.scene.layout.HBox;
-import com.example.dao.BD.Product;
+import com.example.dao.product.Product;
 
 public class ButtonCell extends TableCell<Product, Void> {
     private final Button decreaseButton = new Button("-");
@@ -15,17 +16,18 @@ public class ButtonCell extends TableCell<Product, Void> {
     public ButtonCell(HelloController controller) {
         this.controller = controller;
 
-        // Устанавливаем расстояние между кнопками
-        hbox.setSpacing(10); // 10 пикселей между кнопками
+        hbox.setSpacing(10);
 
+        // Кнопка "-" уменьшает количество
         decreaseButton.setOnAction(event -> {
             Product product = getTableView().getItems().get(getIndex());
-            controller.decreaseQuantity(product);
+            controller.decreaseQuantity(product); // Вызываем decreaseQuantity
         });
 
+        // Кнопка "+" увеличивает количество
         increaseButton.setOnAction(event -> {
             Product product = getTableView().getItems().get(getIndex());
-            controller.increaseQuantity(product);
+            controller.increaseQuantity(product); // Вызываем increaseQuantity
         });
     }
 

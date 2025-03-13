@@ -108,16 +108,19 @@ public class PostgresDAO implements DAO {
 
     @Override
     public void deleteProduct(Product product) {
-        String sql = "DELETE FROM ProductsList WHERE name = ?";
+            String sql = "DELETE FROM ProductsList";
 
-        try (Connection connection = DriverManager.getConnection(url, user, password);
-             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setString(1, product.getName());
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            System.err.println("Ошибка при удалении данных: " + e.getMessage());
+            try (Connection connection = DriverManager.getConnection(url, user, password);
+                 Statement statement = connection.createStatement()) {
+                statement.execute(sql);
+                System.out.println("Все данные удалены.");
+
+                // Сбрасываем последовательность
+                resetSequence();
+            } catch (SQLException e) {
+                System.err.println("Ошибка при удалении данных: " + e.getMessage());
+            }
         }
-    }
 
     private int getCategoryIdByName(String categoryName) {
         String sql = "SELECT id FROM Categories WHERE name = ?";
@@ -134,5 +137,16 @@ public class PostgresDAO implements DAO {
             System.err.println("Ошибка при получении ID категории: " + e.getMessage());
         }
         return -1; // Если категория не найдена
+    }
+    public void resetSequence() {
+        String sql = "ALTER SEQUENCE productslist_id_seq RESTART WITH 1";
+
+        try (Connection connection = DriverManager.getConnection(url, user, password);
+             Statement statement = connection.createStatement()) {
+            statement.execute(sql);
+            System.out.println("Последовательность сброшена.");
+        } catch (SQLException e) {
+            System.err.println("Ошибка при сбросе последовательности: " + e.getMessage());
+        }
     }
 }

@@ -26,11 +26,11 @@ public class HelloController {
 
     public HelloController() {
         // Используем PostgresDAO
-//        DAO postgresDAO = new PostgresDAO();
-//        this.productList = new ProductList(postgresDAO);
+        DAO postgresDAO = new PostgresDAO();
+        this.productList = new ProductList(postgresDAO);
         // Используем FileSystemDAO вместо PostgresDAO
-        DAO fileSystemDAO = new FileSystemDAO();
-        this.productList = new ProductList(fileSystemDAO);
+//        DAO fileSystemDAO = new FileSystemDAO();
+//        this.productList = new ProductList(fileSystemDAO);
     }
 
     @FXML

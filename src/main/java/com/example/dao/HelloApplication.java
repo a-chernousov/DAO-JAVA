@@ -1,6 +1,5 @@
 package com.example.dao;
 
-import com.example.dao.BD.DatabaseConnection;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;

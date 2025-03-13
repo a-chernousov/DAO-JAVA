@@ -1,4 +1,6 @@
-package com.example.dao.BD;
+package com.example.dao.product;
+
+import com.example.dao.BD.DAO;
 
 import java.util.List;
 
@@ -10,14 +12,9 @@ public class ProductList {
         this.dao = dao;
     }
 
-    // Метод для добавления продукта
-    public void addProduct(Product product) {
-        // Логика добавления продукта через DAO
-    }
-
-    // Метод для обновления продукта
-    public void updateProduct(Product product) {
-        dao.updateProduct(product);
+    // Метод для добавления или обновления продукта
+    public void addOrUpdateProduct(Product product) {
+        dao.updateProduct(product); // Используем updateProduct для добавления или обновления
     }
 
     // Метод для удаления продукта
@@ -39,5 +36,10 @@ public class ProductList {
             }
         }
         return null;
+    }
+
+    // Метод для получения всех категорий
+    public List<String> getAllCategories() {
+        return dao.selectAllCategories();
     }
 }

@@ -1,3 +1,7 @@
+## Описание
+Приложение работает как лист покупков, в котором можно написать продукт, выбрать категорию продуктов и выбрать количество
+
+
 ## Создание таблиц в базе данных
 
 ### Таблица `Categories` (Категории)
@@ -37,12 +41,48 @@ INSERT INTO Categories (name, order_index) VALUES
 ('Другое', 10);       
 ```
 
-## Архитектура
 
+## Дополнительный функционал
+База данных - postgresql, так же можно изменить работу программы на использование с *.txt 
+для этого в HelloController.java надо изменить код с 
+```
+public HelloController() {
+        // Используем PostgresDAO
+        DAO postgresDAO = new PostgresDAO();
+        this.productList = new ProductList(postgresDAO);
+        // Используем FileSystemDAO вместо PostgresDAO
+//        DAO fileSystemDAO = new FileSystemDAO();
+//        this.productList = new ProductList(fileSystemDAO);
+    }
+```
+на 
+```
+    public HelloController() {
+        // Используем PostgresDAO
+//        DAO postgresDAO = new PostgresDAO();
+//        this.productList = new ProductList(postgresDAO);
+        // Используем FileSystemDAO вместо PostgresDAO
+        DAO fileSystemDAO = new FileSystemDAO();
+        this.productList = new ProductList(fileSystemDAO);
+    }
+```
+
+![image](https://github.com/user-attachments/assets/7d2390fa-2bb9-418d-b03f-894d4adb1d8f)
+
+Так же надо указать *txt файлы в FileSystemDAO, в которых будут находиться категории и продукты
+9 и 10 строка кода
+```
+    private final String productsFilePath = "D:/VSTU/JavaProg/DAO.txt";; // Файл для продуктов
+    private final String categoriesFilePath = "D:/VSTU/JavaProg/categories.txt"; // Файл для категорий
+```
+
+
+
+
+## Архитектура
 ![dia](https://github.com/user-attachments/assets/464f0383-5f55-4c4b-b7f5-38f6ef082670)
 
 
 ## Результат
-
 ![image](https://github.com/user-attachments/assets/78d92081-f5ed-4265-8d32-74aadcc45eda)
 

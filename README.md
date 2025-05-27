@@ -40,3 +40,9 @@ INSERT INTO Categories (name, order_index) VALUES
 ## Архитектура
 
 ![dia](https://github.com/user-attachments/assets/464f0383-5f55-4c4b-b7f5-38f6ef082670)
+
+
+## Результат
+
+![image](https://github.com/user-attachments/assets/78d92081-f5ed-4265-8d32-74aadcc45eda)
+

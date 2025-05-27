@@ -9,7 +9,7 @@ public interface DAO {
     List<Product> selectAllProducts();
     void updateProduct(Product product);
     void deleteProduct(Product product);
-    List<String> selectAllCategories();
+    List<String> selectAllCategories();// категории находяся в другом месте относительно продуктов
 }
 
 

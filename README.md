@@ -1,4 +1,4 @@
-## Описание
+[categories.txt](https://github.com/user-attachments/files/20452458/categories.txt)## Описание
 Приложение работает как лист покупков, в котором можно написать продукт, выбрать категорию продуктов и выбрать количество
 
 
@@ -75,6 +75,10 @@ public HelloController() {
     private final String productsFilePath = "D:/VSTU/JavaProg/DAO.txt";; // Файл для продуктов
     private final String categoriesFilePath = "D:/VSTU/JavaProg/categories.txt"; // Файл для категорий
 ```
+
+[Uplo15436
+ading categories.txt…]()
+
 
 
 

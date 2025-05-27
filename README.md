@@ -36,3 +36,7 @@ INSERT INTO Categories (name, order_index) VALUES
 ('Автотовары', 9),    
 ('Другое', 10);       
 ```
+
+## Архитектура
+
+![dia](https://github.com/user-attachments/assets/464f0383-5f55-4c4b-b7f5-38f6ef082670)

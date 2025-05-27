@@ -76,11 +76,6 @@ public HelloController() {
     private final String categoriesFilePath = "D:/VSTU/JavaProg/categories.txt"; // Файл для категорий
 ```
 
-Файл с категориями - 
-[categories.txt](https://github.com/user-attachments/files/20452475/categories.txt)
-15436
-
-
 
 ## Архитектура
 ![dia](https://github.com/user-attachments/assets/464f0383-5f55-4c4b-b7f5-38f6ef082670)

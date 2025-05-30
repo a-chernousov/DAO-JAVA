@@ -1,0 +1,115 @@
+@startuml
+
+package "com.example.dao" {
+  class HelloApplication {
+    +start(Stage stage)
+    +main(String[] args)
+  }
+
+  class HelloController {
+    -productTable: TableView<Product>
+    -productNameField: TextField
+    -categoryComboBox: ComboBox<String>
+    -actionsColumn: TableColumn<Product, Void>
+    -productList: ProductList
+    +initialize()
+    +addOrUpdateProduct()
+    +increaseQuantity(Product product)
+    +decreaseQuantity(Product product)
+    -refreshTable()
+  }
+}
+
+package "com.example.dao.product" {
+  class Product {
+    -name: SimpleStringProperty
+    -count: SimpleDoubleProperty
+    -categoryName: SimpleStringProperty
+    +Product(String name, double count, String categoryName)
+    +getName(): String
+    +setName(String name)
+    +getCount(): double
+    +setCount(double count)
+    +getCategoryName(): String
+    +setCategoryName(String categoryName)
+    +toString(): String
+  }
+
+  class ProductList {
+    -dao: DAO
+    +ProductList(DAO dao)
+    +addOrUpdateProduct(Product product)
+    +deleteProduct(Product product)
+    +getAllProducts(): List<Product>
+    +findProductByName(String name): Product
+    +getAllCategories(): List<String>
+  }
+}
+
+package "com.example.dao.BD" {
+  interface DAO {
+    +createTable()
+    +selectAllProducts(): List<Product>
+    +updateProduct(Product product)
+    +deleteProduct(Product product)
+    +selectAllCategories(): List<String>
+  }
+
+  class FileSystemDAO {
+    -productsFilePath: String
+    -categoriesFilePath: String
+    +createTable()
+    +selectAllProducts(): List<Product>
+    +updateProduct(Product product)
+    +deleteProduct(Product product)
+    +selectAllCategories(): List<String>
+    -createFileIfNotExists(String filePath)
+    -updateCategories()
+  }
+
+  class PostgresDAO {
+    -url: String
+    -user: String
+    -password: String
+    +createTable()
+    +selectAllProducts(): List<Product>
+    +updateProduct(Product product)
+    +deleteProduct(Product product)
+    +selectAllCategories(): List<String>
+    -getCategoryIdByName(String categoryName): int
+    -resetSequence()
+  }
+}
+
+package "com.example.dao.buttonCell" {
+  class ButtonCell {
+    -decreaseButton: Button
+    -increaseButton: Button
+    -hbox: HBox
+    -controller: HelloController
+    +ButtonCell(HelloController controller)
+    +updateItem(Void item, boolean empty)
+  }
+
+  class ButtonCellFactory {
+    -controller: HelloController
+    +create(): ButtonCellFactory
+    +setController(HelloController controller)
+    +call(TableColumn<Product, Void> param): TableCell<Product, Void>
+  }
+}
+
+HelloController --> ProductList
+HelloController --> ButtonCell
+HelloController --> ButtonCellFactory
+
+ProductList --> DAO
+FileSystemDAO ..|> DAO
+PostgresDAO ..|> DAO
+
+ButtonCell --> HelloController
+ButtonCellFactory --> HelloController
+
+ProductList --> Product
+
+@enduml

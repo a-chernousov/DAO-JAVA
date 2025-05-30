@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PostgresDAO implements DAO {
-    private String url = "jdbc:postgresql://localhost:5432/Products";
-    private String user = "postgres";
-    private String password = "1111";
+    protected String url = "jdbc:postgresql://localhost:5432/Products";
+    protected String user = "postgres";
+    protected String password = "1111";
 
     @Override
     public void createTable() {
@@ -44,7 +44,7 @@ public class PostgresDAO implements DAO {
     }
 
     @Override
-    public List<Product> selectAllProducts() {
+    public List<Product> readProduct() {
         List<Product> products = new ArrayList<>();
         String sql = "SELECT p.name, p.count, c.name AS category_name " +
                 "FROM ProductsList p " +

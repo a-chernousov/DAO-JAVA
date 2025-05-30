@@ -6,8 +6,8 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 public class FileSystemDAO implements DAO {
-    private final String productsFilePath = "D:/VSTU/JavaProg/DAO.txt";; // Файл для продуктов
-    private final String categoriesFilePath = "D:/VSTU/JavaProg/categories.txt"; // Файл для категорий
+    protected String productsFilePath = "D:/VSTU/JavaProg/DAO.txt"; // Файл для продуктов
+    protected String categoriesFilePath = "D:/VSTU/JavaProg/categories.txt"; // Файл для категорий
 
     @Override
     public void createTable() {
@@ -28,7 +28,7 @@ public class FileSystemDAO implements DAO {
     }
 
     @Override
-    public List<Product> selectAllProducts() {
+    public List<Product> readProduct() {
         List<Product> products = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(productsFilePath))) {
             String line;
@@ -49,7 +49,7 @@ public class FileSystemDAO implements DAO {
 
     @Override
     public void updateProduct(Product product) {
-        List<Product> products = selectAllProducts();
+        List<Product> products = readProduct();
         boolean productExists = false;
 
         // Ищем продукт в списке и обновляем его количество
@@ -83,7 +83,7 @@ public class FileSystemDAO implements DAO {
 
     @Override
     public void deleteProduct(Product product) {
-        List<Product> products = selectAllProducts();
+        List<Product> products = readProduct();
         products.removeIf(p -> p.getName().equals(product.getName()));
 
         // Записываем обновлённый список обратно в файл
@@ -115,7 +115,7 @@ public class FileSystemDAO implements DAO {
     }
 
     private void updateCategories() {
-        List<Product> products = selectAllProducts();
+        List<Product> products = readProduct();
         List<String> categories = new ArrayList<>();
 
         // Собираем уникальные категории из списка продуктов

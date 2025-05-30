@@ -24,12 +24,12 @@ public class ProductList {
 
     // Метод для получения всех продуктов
     public List<Product> getAllProducts() {
-        return dao.selectAllProducts();
+        return dao.readProduct();
     }
 
     // Метод для поиска продукта по имени
     public Product findProductByName(String name) {
-        List<Product> products = dao.selectAllProducts();
+        List<Product> products = dao.readProduct();
         for (Product product : products) {
             if (product.getName().equals(name)) {
                 return product;
